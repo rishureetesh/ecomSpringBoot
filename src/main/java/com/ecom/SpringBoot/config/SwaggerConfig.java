@@ -27,11 +27,11 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("MyApp Rest APIs",
-                "APIs for MyApp.",
+        return new ApiInfo("Springboot E-com Rest APIs",
+                "APIs for my Ecommerce website!!!",
                 "1.0",
                 "Terms of service",
-                new Contact("test", "www.org.com", "test@emaildomain.com"),
+                new Contact("Reetesh Kumar", "https://www.linkedin.com/in/iamreeteshkumar/", "iamreeteshkr@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());
