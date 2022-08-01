@@ -22,11 +22,6 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping
-    public User addUser(@RequestBody User user){
-        return userRepository.save(user);
-    }
-
     @GetMapping("{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id){
         User user = userRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("User doesn't exit with the id: "+id));

@@ -1,6 +1,8 @@
 package com.ecom.SpringBoot.controller;
 
 import com.ecom.SpringBoot.model.AuthenticationRequest;
+import com.ecom.SpringBoot.model.User;
+import com.ecom.SpringBoot.repository.UserRepository;
 import com.ecom.SpringBoot.security.JWTSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,9 @@ public class AuthenticationRequests {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/auth/login")
     public String Authentication(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
         try {
@@ -28,5 +33,10 @@ public class AuthenticationRequests {
             throw new Exception("Invalid EmailId or Password");
         }
         return jwtSecurity.generateToken(authenticationRequest.getEmailid());
+    }
+
+    @PostMapping("/auth/signup")
+    public User addUser(@RequestBody User user){
+        return userRepository.save(user);
     }
 }
