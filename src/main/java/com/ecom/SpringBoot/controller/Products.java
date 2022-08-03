@@ -1,7 +1,25 @@
 package com.ecom.SpringBoot.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.ecom.SpringBoot.model.Product;
+import com.ecom.SpringBoot.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.List;
+
+@RestController()
+@RequestMapping("/api/products/")
 public class Products {
+
+    @Autowired
+    private ProductRepository productRepository;
+    @GetMapping
+    public List<Product> getProducts(){
+        return productRepository.findAll();
+    }
+
+    @PostMapping
+    public Product addProducts(@RequestBody Product productDetails){
+        return productRepository.save((productDetails));
+    }
 }
