@@ -32,5 +32,4 @@ public class UserAddressesController {
         return userAddressRepository.findAll();
     }
 
-
 }
