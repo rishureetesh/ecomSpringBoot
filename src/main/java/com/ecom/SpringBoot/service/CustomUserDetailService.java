@@ -17,13 +17,10 @@ public class CustomUserDetailService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    private static Logger logger = Logger.getLogger("Logging Info!!!");
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByemailid(username);
-        logger.info(username+", "+user.getEmailid()+" : "+user.getPassword());
         return new org.springframework.security.core.userdetails.User(user.getEmailid(), user.getPassword(), new ArrayList<>());
     }
 }
