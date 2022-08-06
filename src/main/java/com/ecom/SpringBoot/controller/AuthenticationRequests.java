@@ -45,6 +45,7 @@ public class AuthenticationRequests {
         cookie.setPath("/");
         response.addCookie(cookie);
         return ResponseEntity.ok("");
+
     }
 
     @PostMapping("/register")
