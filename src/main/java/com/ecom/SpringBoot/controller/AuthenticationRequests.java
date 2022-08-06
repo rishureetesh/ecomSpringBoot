@@ -5,13 +5,19 @@ import com.ecom.SpringBoot.model.User;
 import com.ecom.SpringBoot.repository.UserRepository;
 import com.ecom.SpringBoot.security.JWTSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
+@RequestMapping("/auth")
 public class AuthenticationRequests {
 
     @Autowired
@@ -23,8 +29,8 @@ public class AuthenticationRequests {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/auth/login")
-    public String Authentication(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+    @PostMapping("/authentication")
+    public ResponseEntity<?> Authentication(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception{
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getEmailid(), authenticationRequest.getPassword())
@@ -32,10 +38,16 @@ public class AuthenticationRequests {
         }catch(Exception e){
             throw new Exception("Invalid EmailId or Password");
         }
-        return jwtSecurity.generateToken(authenticationRequest.getEmailid());
+        String token = jwtSecurity.generateToken(authenticationRequest.getEmailid());
+        Cookie cookie = new Cookie("ecomToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return ResponseEntity.ok("");
     }
 
-    @PostMapping("/auth/signup")
+    @PostMapping("/register")
     public User addUser(@RequestBody User user){
         return userRepository.save(user);
     }

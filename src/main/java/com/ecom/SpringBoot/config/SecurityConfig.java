@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/auth/login",
+                        "/auth/authentication",
                         "/auth/signup",
                         "/swagger-ui.html",
                         "/swagger-ui/*",
