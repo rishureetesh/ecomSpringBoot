@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -31,6 +32,43 @@ public class AuthenticationRequests {
 
     @PostMapping("/authentication")
     public ResponseEntity<?> Authentication(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception{
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmailid(), authenticationRequest.getPassword())
+            );
+        }catch(Exception e){
+            throw new Exception("Invalid EmailId or Password");
+        }
+        String token = jwtSecurity.generateToken(authenticationRequest.getEmailid());
+        Cookie cookie = new Cookie("ecomToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return ResponseEntity.ok("");
+    }
+
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> RefreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmailid(), authenticationRequest.getPassword())
+            );
+        }catch(Exception e){
+            throw new Exception("Invalid EmailId or Password");
+        }
+        String token = jwtSecurity.generateToken(authenticationRequest.getEmailid());
+        Cookie cookie = new Cookie("ecomToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> Logout(HttpServletRequest request, HttpServletResponse response) throws Exception{
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getEmailid(), authenticationRequest.getPassword())
